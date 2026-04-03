@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Advance Computer Center</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- LOGIN SECTION -->
+        <div id="loginSection" class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>⚡ ADVANCE COMPUTER CENTER</h1>
+                    <p>Administrator Access Portal</p>
+                </div>
+                <div id="loginError" class="error-message" style="display: none;"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>📧 Email Address</label>
+                        <input type="email" id="adminEmail" required placeholder="admin@advancecenter.com">
+                    </div>
+                    <div class="form-group">
+                        <label>🔒 Password</label>
+                        <input type="password" id="adminPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn-login" id="loginBtn">🔐 Login to Dashboard</button>
+                </form>
+                <!-- <div class="default-cred">
+                    <p>Default: admin@advancecenter.com / Admin@123</p>
+                    <p style="margin-top: 8px; font-size: 0.7rem;">Make sure backend is running on port 5000</p>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboardSection" style="display: none;">
+            <div class="dashboard-header">
+                <div class="logo">
+                    <h2>💻 Advance Computer Center</h2>
+                    <p>Student Management System | Cyber Institute</p>
+                </div>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="material-icons">logout</i> Logout
+                </button>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="material-icons">people_alt</i>
+                    <h3 id="totalStudents">0</h3>
+                    <p>Total Students Registered</p>
+                </div>
+                <div class="stat-card">
+                    <i class="material-icons">event_available</i>
+                    <h3 id="monthlyCount">0</h3>
+                    <p>Joined This Month</p>
+                </div>
+                <div class="stat-card">
+                    <i class="material-icons">school</i>
+                    <h3 id="courseCount">0</h3>
+                    <p>Active Courses</p>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="search-bar">
+                    <i class="material-icons">search</i>
+                    <input type="text" id="searchInput" placeholder="Search by name, course, or contact number...">
+                </div>
+                <div class="table-wrapper">
+                    <table id="studentTable">
+                        <thead>
+                            <tr><th>Photo</th><th>Full Name</th><th>Course</th><th>Contact</th><th>Join Date</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="studentTableBody">
+                            <tr><td colspan="6"><div class="loading"><div class="spinner"></div>Loading students...</div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STUDENT DETAILS MODAL -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📄 Student Registration Details</h2>
+                <div>
+                    <button id="downloadPDFBtn" class="btn-pdf" style="margin-right: 12px;">
+                        <i class="material-icons" style="font-size: 16px;">picture_as_pdf</i> Download PDF
+                    </button>
+                    <span class="close">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

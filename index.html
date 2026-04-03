@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advance Computer Center - Student Registration</title>
+    
+    <!-- Favicon -->
+    <!-- <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50%' y='50%' text-anchor='middle' dy='.35em' font-size='60' fill='%2300d4ff'>⚡</text></svg>"> -->
+    <!-- <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='50%' y='50%' text-anchor='middle' dy='.35em' font-size='60' fill='%2300d4ff'>⚡</text></svg>"> -->
+  <link rel="icon" type="image/x-icon" href="adv.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* Additional logo styles */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-icon:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00d4ff, #7c3aed);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .header {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .header > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .logo-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .logo-text {
+                font-size: 22px;
+                text-align: center;
+            }
+            .logo-icon {
+                width: 55px;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-card">
+            <div class="header">
+                <!-- Logo Section with Your Custom Image -->
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <img src="adv.jpg" alt="Advance Computer Center Logo">
+                    </div>
+                    <div class="logo-text">
+                        ADVANCE COMPUTER CENTER
+                    </div>
+                </div>
+                <p>Registration Form - Students are requested to fill the form providing their current details</p>
+                <div class="contact-info">
+                    <span>📍 Beblari-11, Laxmimarga</span>
+                    <span>📞 9842153293 / 9828758459</span>
+                    <span>🌐 www.aciasc.edu.np</span>
+                </div>
+                <div class="managing">
+                    Managing Director: <strong>Naw Chaudhary</strong>
+                </div>
+            </div>
+
+            <div class="form-body">
+                <div class="disclaimer">
+                    ⚠️ In case of urgency we are not responsible.<br>
+                    I am agreeing with the terms mentioned and I want to join this institute by providing following details.
+                </div>
+
+                <div class="block-letter">
+                    📝 Student Name (Block Letter) / उपलब्धता
+                </div>
+
+                <form id="registrationForm" enctype="multipart/form-data">
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h3>👤 Basic Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required placeholder="Enter in BLOCK LETTERS">
+                            </div>
+                            <div class="form-group">
+                                <label>Class Time *</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="classTime" value="Morning"> Morning</label>
+                                    <label><input type="radio" name="classTime" value="Day"> Day</label>
+                                    <label><input type="radio" name="classTime" value="Evening"> Evening</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Student Photo</label>
+                                <div class="photo-upload" id="photoUpload">
+                                    <div class="photo-preview" id="photoPreview">
+                                        <i class="material-icons">📷</i>
+                                        <span>Click to upload</span>
+                                    </div>
+                                    <input type="file" id="studentPhoto" name="photo" accept="image/*" style="display: none">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Related Institution</label>
+                                <input type="text" id="institution" placeholder="School/College/Office">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3>📋 Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Father's Name</label><input type="text" id="fatherName"></div>
+                            <div class="form-group"><label>Mother's Name</label><input type="text" id="motherName"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Date of Birth (BS)</label><input type="text" id="dobBS" placeholder="2078-01-15"></div>
+                            <div class="form-group"><label>Marital Status</label>
+                                <select id="maritalStatus">
+                                    <option value="">Select</option>
+                                    <option>Single</option>
+                                    <option>Married</option>
+                                    <option>Divorced</option>
+                                    <option>Widowed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Gender</label>
+                                <select id="gender">
+                                    <option value="">Select</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label>Place of Birth</label><input type="text" id="birthPlace"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Qualification</label><input type="text" id="qualification" placeholder="+2, Bachelor, Master"></div>
+                            <div class="form-group"><label>Nationality</label><input type="text" id="nationality" value="Nepali"></div>
+                        </div>
+                    </div>
+
+                    <!-- Course & Contact Details -->
+                    <div class="form-section">
+                        <h3>📚 Course & Contact Details</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Course Name *</label><input type="text" id="courseName" required placeholder="e.g., Web Development, CCA"></div>
+                            <div class="form-group"><label>Course Duration</label><input type="text" id="courseDuration" placeholder="3 months / 6 months"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Contact No. *</label><input type="tel" id="contactNo" required></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="email"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Street / Tole</label><input type="text" id="street"></div>
+                            <div class="form-group"><label>City / Municipality</label><input type="text" id="city"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>District</label><input type="text" id="district"></div>
+                            <div class="form-group"><label>Province</label><input type="text" id="province"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Refer By</label><input type="text" id="referBy"></div>
+                            <div class="form-group"><label>Join Date</label><input type="text" id="joinDate" placeholder="YYYY-MM-DD"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Signature</label><input type="text" id="signature" placeholder="Full name or digital signature"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="terms">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <label>I hereby confirm that all the information provided is true and I agree to all terms & conditions of Advance Computer Center.</label>
+                        </div>
+                        <button type="submit" class="btn-submit">✅ REGISTER NOW</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="admin-link">
+            <a href="admin/admin.html">🔐 Admin Portal (Login Required)</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
