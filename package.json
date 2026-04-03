@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Student Registration System",
   "scripts": {
-    "install-all": "npm install --prefix backend",
-    "build": "echo 'No build step required'",
-    "start": "npm start --prefix backend"
+    "install-backend": "cd backend && npm install",
+    "start": "cd backend && node server.js",
+    "build": "echo 'No build step required'"
   },
   "engines": {
     "node": "18.x"
