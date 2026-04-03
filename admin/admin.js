@@ -1,6 +1,17 @@
 // ==================== CONFIGURATION ====================
-const API_URL = 'http://localhost:5000/api';
-const BASE_URL = 'http://localhost:5000';
+// Dynamic API URL - Local vs Production
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000/api'
+    : 'https://adv-form-production.up.railway.app/api';
+
+const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://adv-form-production.up.railway.app';
+
+console.log('🔗 Admin API URL:', API_URL);
+console.log('🔗 Admin BASE URL:', BASE_URL);
+console.log('📍 Environment:', window.location.hostname === 'localhost' ? 'Development' : 'Production');
+
 let authToken = localStorage.getItem('adminToken');
 let currentStudents = [];
 let currentStudentData = null;
@@ -96,11 +107,11 @@ function renderStudentTable(students) {
                         `<img src="${photoUrl}" class="student-photo" alt="photo" 
                             onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div class=\'no-photo\'><i class=\'material-icons\'>person</i></div>';">` : 
                         `<div class="no-photo"><i class="material-icons">person</i></div>`}
-                 </td>
-                 <td><strong>${escapeHtml(student.fullName)}</strong></td>
-                 <td>${escapeHtml(student.courseName)}</td>
-                 <td>${escapeHtml(student.contactNo)}</td>
-                 <td>${student.joinDate || formatDate(student.createdAt)}</td>
+                  </td>
+                  <td><strong>${escapeHtml(student.fullName)}</strong></td>
+                  <td>${escapeHtml(student.courseName)}</td>
+                  <td>${escapeHtml(student.contactNo)}</td>
+                  <td>${student.joinDate || formatDate(student.createdAt)}</td>
                 <td class="action-buttons">
                     <button class="btn-view" onclick="viewStudent('${student._id}')">
                         <i class="material-icons" style="font-size: 14px;">visibility</i> View
@@ -108,7 +119,7 @@ function renderStudentTable(students) {
                     <button class="btn-delete" onclick="deleteStudent('${student._id}')">
                         <i class="material-icons" style="font-size: 14px;">delete</i> Delete
                     </button>
-                 </td>
+                  </td>
             </tr>
         `;
     }).join('');
@@ -142,7 +153,6 @@ async function loadStudents() {
 }
 
 // ==================== PRINT-FRIENDLY CYBER THEME PDF ====================
-// ==================== FULL-PAGE BALANCED PRINT-FRIENDLY PDF ====================
 function generatePDF() {
     if (!currentStudentData) return;
     
@@ -163,24 +173,20 @@ function generatePDF() {
             
             .a4-container {
                 width: 210mm;
-                height: 297mm;
+                min-height: 297mm;
                 padding: 18mm; 
                 background: #fff;
                 position: relative;
                 color: #1a1f3a;
-                display: flex;
-                flex-direction: column;
-                overflow: hidden; /* Watermark overflow handle garna */
             }
 
-            /* Watermark Style */
             .watermark {
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%) rotate(-30deg);
-                width: 450px; /* Logo size */
-                opacity: 0.05; /* Halka matra dekhine (0.05 - 0.1 best hunchha) */
+                width: 350px;
+                opacity: 0.04;
                 z-index: 0;
                 pointer-events: none;
             }
@@ -198,7 +204,7 @@ function generatePDF() {
 
             .logo-section { display: flex; align-items: center; gap: 18px; }
             .institute-logo-img {
-                width: 75px; height: 75px;
+                width: 70px; height: 70px;
                 object-fit: contain;
                 border: 2px solid #00d4ff;
                 padding: 3px;
@@ -208,7 +214,6 @@ function generatePDF() {
             .institute-info h1 {
                 font-size: 24px; font-weight: 800; color: #0a0e27;
                 line-height: 1.1; margin-bottom: 5px;
-                letter-spacing: -0.5px;
             }
             .institute-info p { font-size: 11px; color: #64748b; font-weight: 500; }
 
@@ -230,7 +235,9 @@ function generatePDF() {
                 position: absolute; 
                 top: 105px; right: 18mm;
                 background: #f8fafc;
-                display: flex; align-items: center; justify-content: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 z-index: 10;
             }
             .photo-box img { width: 100%; height: 100%; object-fit: cover; }
@@ -265,11 +272,10 @@ function generatePDF() {
                 font-size: 9px; font-weight: 700; color: #94a3b8; 
                 text-transform: uppercase; letter-spacing: 0.5px;
             }
-            .value { font-size: 13px; font-weight: 600; color: #1e293b; min-height: 18px; }
+            .value { font-size: 13px; font-weight: 600; color: #1e293b; }
 
             .footer-container {
-                margin-top: auto;
-                padding-top: 20px;
+                margin-top: 20px;
                 position: relative;
                 z-index: 1;
             }
@@ -279,7 +285,7 @@ function generatePDF() {
                 background: #f8fafc; border-radius: 8px;
                 font-size: 10px; line-height: 1.6; color: #475569;
                 border: 1px dashed #cbd5e1;
-                margin-bottom: 50px;
+                margin-bottom: 30px;
             }
 
             .signature-row {
@@ -291,7 +297,7 @@ function generatePDF() {
             .sig-text { font-size: 11px; font-weight: 700; color: #1e293b; }
 
             .print-footer {
-                margin-top: 30px;
+                margin-top: 20px;
                 text-align: center; font-size: 9px; color: #cbd5e1;
                 border-top: 1px solid #f1f5f9; padding-top: 10px;
             }
@@ -299,11 +305,11 @@ function generatePDF() {
     </head>
     <body>
         <div class="a4-container">
-            <img src="adv.jpg" alt="Watermark" class="watermark">
+            <img src="${BASE_URL}/adv.jpg" alt="Watermark" class="watermark" onerror="this.style.display='none'">
 
             <header class="header">
                 <div class="logo-section">
-                    <img src="adv.jpg" alt="Logo" class="institute-logo-img">
+                    <img src="${BASE_URL}/adv.jpg" alt="Logo" class="institute-logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.35em%27 font-size=%2760%27 fill=%27%2300d4ff%27%3E⚡%3C/text%3E%3C/svg%3E'">
                     <div class="institute-info">
                         <h1>ADVANCE COMPUTER CENTER</h1>
                         <p>Belbari-11, Laxmimarga, Morang | Phone: 9842153293</p>
@@ -323,7 +329,7 @@ function generatePDF() {
                 <section class="section">
                     <h2 class="section-title">Course & Batch Details</h2>
                     <div class="grid top-section-grid">
-                        <div class="field"><span class="label">Applying for Course</span><span class="value">${s.courseName}</span></div>
+                        <div class="field"><span class="label">Applying for Course</span><span class="value">${escapeHtml(s.courseName)}</span></div>
                         <div class="field"><span class="label">Course Duration</span><span class="value">${s.courseDuration || '—'}</span></div>
                         <div class="field"><span class="label">Preferred Batch Time</span><span class="value">${s.classTime || '—'}</span></div>
                         <div class="field"><span class="label">Admission Date</span><span class="value">${s.joinDate || formatDate(s.createdAt)}</span></div>
@@ -333,28 +339,30 @@ function generatePDF() {
                 <section class="section">
                     <h2 class="section-title">Personal Information</h2>
                     <div class="grid">
-                        <div class="field"><span class="label">Student's Full Name</span><span class="value">${s.fullName}</span></div>
+                        <div class="field"><span class="label">Student's Full Name</span><span class="value">${escapeHtml(s.fullName)}</span></div>
                         <div class="field"><span class="label">Date of Birth (B.S.)</span><span class="value">${s.dobBS || '—'}</span></div>
-                        <div class="field"><span class="label">Father's Name</span><span class="value">${s.fatherName || '—'}</span></div>
-                        <div class="field"><span class="label">Mother's Name</span><span class="value">${s.motherName || '—'}</span></div>
+                        <div class="field"><span class="label">Father's Name</span><span class="value">${escapeHtml(s.fatherName) || '—'}</span></div>
+                        <div class="field"><span class="label">Mother's Name</span><span class="value">${escapeHtml(s.motherName) || '—'}</span></div>
                         <div class="field"><span class="label">Gender</span><span class="value">${s.gender || '—'}</span></div>
                         <div class="field"><span class="label">Marital Status</span><span class="value">${s.maritalStatus || '—'}</span></div>
-                        <div class="field"><span class="label">Academic Qualification</span><span class="value">${s.qualification || '—'}</span></div>
-                        <div class="field"><span class="label">Nationality</span><span class="value">${s.nationality || '—'}</span></div>
+                        <div class="field"><span class="label">Academic Qualification</span><span class="value">${escapeHtml(s.qualification) || '—'}</span></div>
+                        <div class="field"><span class="label">Nationality</span><span class="value">${escapeHtml(s.nationality) || '—'}</span></div>
+                        <div class="field"><span class="label">Place of Birth</span><span class="value">${escapeHtml(s.birthPlace) || '—'}</span></div>
+                        <div class="field"><span class="label">Related Institution</span><span class="value">${escapeHtml(s.institution) || '—'}</span></div>
                     </div>
                 </section>
 
                 <section class="section">
                     <h2 class="section-title">Contact & Location Details</h2>
                     <div class="grid">
-                        <div class="field"><span class="label">Mobile Number</span><span class="value">${s.contactNo}</span></div>
-                        <div class="field"><span class="label">Email Address</span><span class="value">${s.email || '—'}</span></div>
+                        <div class="field"><span class="label">Mobile Number</span><span class="value">${escapeHtml(s.contactNo)}</span></div>
+                        <div class="field"><span class="label">Email Address</span><span class="value">${escapeHtml(s.email) || '—'}</span></div>
+                        <div class="field"><span class="label">Refer By / Source</span><span class="value">${escapeHtml(s.referBy) || 'Self'}</span></div>
+                        <div class="field"><span class="label">Signature</span><span class="value">${escapeHtml(s.signature) || '—'}</span></div>
                         <div class="field" style="grid-column: span 2;">
                             <span class="label">Permanent Address</span>
-                            <span class="value">${s.street || ''}, ${s.city || ''}, ${s.district || ''}, ${s.province || ''}</span>
+                            <span class="value">${escapeHtml(s.street) || ''} ${escapeHtml(s.city) || ''}, ${escapeHtml(s.district) || ''}, ${escapeHtml(s.province) || ''}</span>
                         </div>
-                        <div class="field"><span class="label">Birth Place</span><span class="value">${s.birthPlace || '—'}</span></div>
-                        <div class="field"><span class="label">Refer By / Source</span><span class="value">${s.referBy || 'Self'}</span></div>
                     </div>
                 </section>
             </main>
@@ -366,6 +374,7 @@ function generatePDF() {
 
                 <div class="signature-row">
                     <div class="sig-box"><div class="sig-line"></div><div class="sig-text">Student's Signature</div></div>
+                    <div class="sig-box"><div class="sig-line"></div><div class="sig-text">Parent/Guardian Signature</div></div>
                     <div class="sig-box"><div class="sig-line"></div><div class="sig-text">Authorized Signature</div></div>
                 </div>
 
@@ -391,9 +400,14 @@ function generatePDF() {
 
     html2pdf().set(opt).from(element).save().then(() => {
         document.body.removeChild(element);
-        showToast('PDF with Watermark Generated!', 'success');
+        showToast('PDF Generated Successfully!', 'success');
+    }).catch(err => {
+        document.body.removeChild(element);
+        console.error('PDF error:', err);
+        showToast('Error generating PDF', 'error');
     });
 }
+
 // ==================== VIEW STUDENT DETAILS ====================
 window.viewStudent = async (id) => {
     try {
@@ -569,9 +583,9 @@ if (loginForm) {
             console.error('Login error:', error);
             if (loginError) {
                 loginError.style.display = 'block';
-                loginError.textContent = 'Network error. Make sure backend is running on port 5000';
+                loginError.textContent = 'Network error. Make sure backend is running.';
             }
-            showToast('Network error. Make sure backend is running on port 5000', 'error');
+            showToast('Network error. Make sure backend is running.', 'error');
         } finally {
             if (loginBtn) {
                 loginBtn.disabled = false;
@@ -606,11 +620,11 @@ window.onclick = (e) => {
 // Debug function to check server status
 async function checkServerStatus() {
     try {
-        const response = await fetch(`${BASE_URL}/`);
+        const response = await fetch(`${BASE_URL}/api/status`);
         const data = await response.json();
-        console.log('Server status:', data);
+        console.log('✅ Server status:', data);
     } catch (error) {
-        console.error('Server not reachable:', error);
+        console.error('❌ Server not reachable:', error);
     }
 }
 checkServerStatus();

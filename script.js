@@ -1,7 +1,13 @@
-// API Configuration
-const API_URL = 'http://localhost:5000/api';
+// ==================== API CONFIGURATION ====================
+// Dynamic API URL - Local vs Production
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000/api'
+    : 'https://adv-form-production.up.railway.app/api';
 
-// Photo Upload Handling
+console.log('🔗 API URL:', API_URL);
+console.log('📍 Environment:', window.location.hostname === 'localhost' ? 'Development' : 'Production');
+
+// ==================== PHOTO UPLOAD HANDLING ====================
 const photoUpload = document.getElementById('photoUpload');
 const photoInput = document.getElementById('studentPhoto');
 const photoPreview = document.getElementById('photoPreview');
@@ -24,7 +30,7 @@ if (photoInput) {
     });
 }
 
-// Show message function
+// ==================== SHOW MESSAGE FUNCTION ====================
 function showMessage(message, type) {
     const msgDiv = document.createElement('div');
     msgDiv.className = `message ${type}`;
@@ -35,7 +41,7 @@ function showMessage(message, type) {
     }, 3000);
 }
 
-// Form Submission
+// ==================== FORM SUBMISSION ====================
 const registrationForm = document.getElementById('registrationForm');
 
 if (registrationForm) {
@@ -99,6 +105,12 @@ if (registrationForm) {
             formData.append('photo', photoInput.files[0]);
         }
 
+        // Disable submit button while processing
+        const submitBtn = document.querySelector('.btn-submit');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '⏳ REGISTERING...';
+
         try {
             const response = await fetch(`${API_URL}/students/register`, {
                 method: 'POST',
@@ -113,11 +125,31 @@ if (registrationForm) {
                 photoPreview.innerHTML = '<i class="material-icons">📷</i><span>Click to upload</span>';
                 document.querySelectorAll('input[name="classTime"]').forEach(radio => radio.checked = false);
             } else {
-                showMessage('Error: ' + data.message, 'error');
+                showMessage('Error: ' + (data.message || 'Registration failed'), 'error');
             }
         } catch (error) {
             console.error('Registration error:', error);
-            showMessage('Network error. Please make sure the backend server is running on port 5000', 'error');
+            showMessage('Network error. Please check your connection and try again.', 'error');
+        } finally {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
         }
     });
+}
+
+// ==================== CHECK SERVER STATUS ====================
+async function checkServerStatus() {
+    try {
+        const response = await fetch(`${API_URL.replace('/api', '')}/api/status`);
+        const data = await response.json();
+        console.log('✅ Server Status:', data);
+    } catch (error) {
+        console.error('❌ Server not reachable:', error);
+    }
+}
+
+// Check server status on page load
+if (window.location.hostname !== 'localhost') {
+    checkServerStatus();
 }
